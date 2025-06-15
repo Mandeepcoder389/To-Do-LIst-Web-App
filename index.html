@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskMaster - Simple To-Do List</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-tasks"></i>
+                <span>TaskMaster</span>
+            </div>
+            <div class="nav-links">
+                <a href="#home" class="active" data-section="home">Home</a>
+                <a href="#about" data-section="about">About</a>
+                <a href="#features" data-section="features">Features</a>
+                <a href="#contact" data-section="contact">Contact</a>
+            </div>
+            <div class="auth-buttons">
+                <button id="loginBtn" class="btn-login">
+                    <i class="fas fa-user"></i> Login
+                </button>
+                <button id="signupBtn" class="btn-signup">
+                    <i class="fas fa-user-plus"></i> Sign Up
+                </button>
+            </div>
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Login to TaskMaster</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" required>
+                </div>
+                <button type="submit" class="btn-submit">Login</button>
+                <p class="form-footer">
+                    Don't have an account? <a href="#" id="switchToSignup">Sign up</a>
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div id="signupModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Create Account</h2>
+            <form id="signupForm">
+                <div class="form-group">
+                    <label for="signupName">Full Name</label>
+                    <input type="text" id="signupName" required>
+                </div>
+                <div class="form-group">
+                    <label for="signupEmail">Email</label>
+                    <input type="email" id="signupEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="signupPassword">Password</label>
+                    <input type="password" id="signupPassword" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" id="confirmPassword" required>
+                </div>
+                <button type="submit" class="btn-submit">Sign Up</button>
+                <p class="form-footer">
+                    Already have an account? <a href="#" id="switchToLogin">Login</a>
+                </p>
+            </form>
+        </div>
+    </div>
+
+   
+    <div id="home" class="content-section active">
+        <!-- Main Content -->
+        <div class="container">
+            <header>
+                <h1>TaskMaster</h1>
+                <p class="subtitle">Simple & Efficient Task Management</p>
+            </header>
+
+            <div class="todo-app">
+                <div class="user-welcome">
+                    <div class="user-info" id="userInfoBtn">
+                        <i class="fas fa-user-circle"></i>
+                        <span id="userName">Guest User</span>
+                    </div>
+                    <div class="date-info" id="calendarBtn">
+                        <i class="far fa-calendar"></i>
+                        <span id="currentDate"></span>
+                    </div>
+                </div>
+
+                <div class="input-section">
+                    <div class="input-wrapper">
+                        <i class="fas fa-plus input-icon"></i>
+                        <input type="text" id="taskInput" placeholder="Add a new task...">
+                    </div>
+                    <div class="task-datetime">
+                        <div class="datetime-group">
+                            <i class="far fa-calendar"></i>
+                            <input type="date" id="taskDate" class="task-date">
+                        </div>
+                        <div class="datetime-group">
+                            <i class="far fa-clock"></i>
+                            <input type="time" id="taskTime" class="task-time">
+                        </div>
+                        <div class="alarm-group">
+                            <label class="alarm-toggle">
+                                <input type="checkbox" id="taskAlarm">
+                                <i class="far fa-bell"></i>
+                                <span>Set Alarm</span>
+                            </label>
+                        </div>
+                    </div>
+                    <button id="addTaskBtn">
+                        <i class="fas fa-plus"></i> Add Task
+                    </button>
+                </div>
+
+                <div class="filter-section">
+                    <button class="filter-btn active" data-filter="all">
+                        <i class="fas fa-list"></i> All
+                    </button>
+                    <button class="filter-btn" data-filter="pending">
+                        <i class="fas fa-clock"></i> Pending
+                    </button>
+                    <button class="filter-btn" data-filter="completed">
+                        <i class="fas fa-check-circle"></i> Completed
+                    </button>
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="searchTask" placeholder="Search tasks...">
+                    </div>
+                </div>
+
+                <div class="tasks-container">
+                    <ul id="taskList">
+                        <!-- Tasks will be dynamically added here -->
+                    </ul>
+                </div>
+
+                <div class="task-stats">
+                    <div class="stats-info">
+                        <span id="taskCount">0 tasks remaining</span>
+                        <span class="separator">|</span>
+                        <span id="completedCount">0 completed</span>
+                    </div>
+                    <div class="stats-actions">
+                        <button id="clearCompletedBtn">
+                            <i class="fas fa-trash"></i> Clear Completed
+                        </button>
+                        <button id="exportTasksBtn">
+                            <i class="fas fa-download"></i> Export
+                        </button>
+                        <button id="exportPdfBtn">
+                            <i class="fas fa-file-pdf"></i> Export as PDF
+                        </button>
+                    </div>
+                </div>
+
+                <div class="calendar-view">
+                    <div class="calendar-header">
+                        <button id="prevMonth" class="calendar-nav">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <h3 id="currentMonth">September 2024</h3>
+                        <button id="nextMonth" class="calendar-nav">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                    <div class="calendar-grid">
+                        <div class="calendar-days">
+                            <span>Sun</span>
+                            <span>Mon</span>
+                            <span>Tue</span>
+                            <span>Wed</span>
+                            <span>Thu</span>
+                            <span>Fri</span>
+                            <span>Sat</span>
+                        </div>
+                        <div id="calendarDates" class="calendar-dates">
+                            <!-- Calendar dates will be dynamically added here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="about" class="content-section">
+        <div class="container">
+            <div class="section-content">
+                <h2>About TaskMaster</h2>
+                <div class="about-grid">
+                    <div class="about-card">
+                        <i class="fas fa-rocket"></i>
+                        <h3>Our Mission</h3>
+                        <p>To provide a simple yet powerful task management solution that helps people stay organized and productive.</p>
+                    </div>
+                    <div class="about-card">
+                        <i class="fas fa-lightbulb"></i>
+                        <h3>Our Vision</h3>
+                        <p>To become the go-to task management tool for individuals and teams worldwide.</p>
+                    </div>
+                    <div class="about-card">
+                        <i class="fas fa-users"></i>
+                        <h3>Our Team</h3>
+                        <p>A dedicated group of developers and designers passionate about creating the best user experience.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="features" class="content-section">
+        <div class="container">
+            <div class="section-content">
+                <h2>Features</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <i class="fas fa-tasks"></i>
+                        <h3>Task Management</h3>
+                        <p>Create, edit, and organize your tasks with ease.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-user-shield"></i>
+                        <h3>User Accounts</h3>
+                        <p>Secure login and personal task storage.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-mobile-alt"></i>
+                        <h3>Responsive Design</h3>
+                        <p>Works seamlessly on all devices.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-moon"></i>
+                        <h3>Dark Mode</h3>
+                        <p>Easy on the eyes in any lighting condition.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-search"></i>
+                        <h3>Smart Search</h3>
+                        <p>Quickly find any task with our search feature.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-file-export"></i>
+                        <h3>Export Tasks</h3>
+                        <p>Backup and share your tasks easily.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="contact" class="content-section">
+        <div class="container">
+            <div class="section-content">
+                <h2>Contact Us</h2>
+                <div class="contact-grid">
+                    <div class="contact-info">
+                        <div class="contact-card">
+                            <i class="fas fa-envelope"></i>
+                            <h3>Email Us</h3>
+                            <p>support@taskmaster.com</p>
+                        </div>
+                        <div class="contact-card">
+                            <i class="fas fa-phone"></i>
+                            <h3>Call Us</h3>
+                            <p>+91 9856123477</p>
+                        </div>
+                        <div class="contact-card">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <h3>Visit Us</h3>
+                            <p>mahisbathan, kolkata, west bengal</p>
+                        </div>
+                    </div>
+                    <form id="contactForm" class="contact-form">
+                        <div class="form-group">
+                            <label for="contactName">Name</label>
+                            <input type="text" id="contactName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="contactEmail">Email</label>
+                            <input type="email" id="contactEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="contactMessage">Message</label>
+                            <textarea id="contactMessage" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="btn-submit">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>TaskMaster</h3>
+                <p>Your personal task management solution</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <a href="#">Home</a>
+                <a href="#">About</a>
+                <a href="#">Features</a>
+                <a href="#">Contact</a>
+            </div>
+            <div class="footer-section">
+                <h3>Connect With Us</h3>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 TaskMaster. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Edit Task Modal -->
+    <div id="editTaskModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Edit Task</h2>
+            <form id="editTaskForm">
+                <div class="form-group">
+                    <label for="editTaskText">Task Description</label>
+                    <input type="text" id="editTaskText" required>
+                </div>
+                <div class="task-datetime">
+                    <div class="datetime-group">
+                        <i class="far fa-calendar"></i>
+                        <input type="date" id="editTaskDate" class="task-date">
+                    </div>
+                    <div class="datetime-group">
+                        <i class="far fa-clock"></i>
+                        <input type="time" id="editTaskTime" class="task-time">
+                    </div>
+                    <div class="alarm-group">
+                        <label class="alarm-toggle">
+                            <input type="checkbox" id="editTaskAlarm">
+                            <i class="far fa-bell"></i>
+                            <span>Set Alarm</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button type="submit" class="btn-submit">
+                        <i class="fas fa-save"></i> Save Changes
+                    </button>
+                    <button type="button" class="btn-cancel" id="cancelEditTask">
+                        <i class="fas fa-times"></i> Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="script.js"></script>
+
+    <!-- Add this before the closing body tag -->
+    <audio id="alarmSound" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3"></audio>
+    <div id="alarmModal" class="modal">
+        <div class="modal-content alarm-modal">
+            <h2>Task Reminder</h2>
+            <p id="alarmMessage"></p>
+            <div class="alarm-actions">
+                <button id="snoozeAlarm" class="btn-submit">
+                    <i class="fas fa-clock"></i> Snooze (5 min)
+                </button>
+                <button id="dismissAlarm" class="btn-submit">
+                    <i class="fas fa-check"></i> Dismiss
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add these new modals before the closing body tag -->
+    <div id="userProfileModal" class="modal">
+        <div class="modal-content profile-modal">
+            <span class="close-modal">&times;</span>
+            <div class="profile-header">
+                <i class="fas fa-user-circle profile-icon"></i>
+                <h2 id="profileUserName">Guest User</h2>
+            </div>
+            <div class="profile-stats">
+                <div class="stat-item">
+                    <i class="fas fa-tasks"></i>
+                    <div class="stat-info">
+                        <span class="stat-value" id="totalTasks">0</span>
+                        <span class="stat-label">Total Tasks</span>
+                    </div>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-check-circle"></i>
+                    <div class="stat-info">
+                        <span class="stat-value" id="completedTasks">0</span>
+                        <span class="stat-label">Completed</span>
+                    </div>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-clock"></i>
+                    <div class="stat-info">
+                        <span class="stat-value" id="pendingTasks">0</span>
+                        <span class="stat-label">Pending</span>
+                    </div>
+                </div>
+            </div>
+            <div class="profile-actions">
+                <button id="exportProfileBtn" class="btn-submit">
+                    <i class="fas fa-download"></i> Export Tasks
+                </button>
+                <button id="clearAllTasksBtn" class="btn-submit btn-danger">
+                    <i class="fas fa-trash"></i> Clear All Tasks
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="calendarTasksModal" class="modal">
+        <div class="modal-content calendar-tasks-modal">
+            <span class="close-modal">&times;</span>
+            <h2>Tasks Calendar</h2>
+            <div class="calendar-tasks-grid">
+                <div class="calendar-sidebar">
+                    <div class="calendar-mini">
+                        <div class="calendar-mini-header">
+                            <button id="prevMonthMini" class="calendar-nav">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <h3 id="currentMonthMini">September 2024</h3>
+                            <button id="nextMonthMini" class="calendar-nav">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                        <div id="calendarMiniDates" class="calendar-mini-dates">
+                            <!-- Mini calendar dates will be added here -->
+                        </div>
+                    </div>
+                    <div class="task-filters">
+                        <h3>Filter Tasks</h3>
+                        <div class="filter-options">
+                            <label class="filter-option">
+                                <input type="checkbox" id="showCompleted" checked>
+                                <span>Show Completed</span>
+                            </label>
+                            <label class="filter-option">
+                                <input type="checkbox" id="showAlarms" checked>
+                                <span>Show Alarms</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="tasks-list">
+                    <h3 id="selectedDateTasks">Tasks for Today</h3>
+                    <div id="calendarTasksList" class="calendar-tasks-list">
+                        <!-- Tasks for selected date will be shown here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Bubbles -->
+    <div id="bubbles-container"></div>
+    <!-- Confetti Container -->
+    <div id="confetti" class="confetti"></div>
+    <!-- Loading Spinner (hidden by default) -->
+    <div id="spinner" class="spinner" style="display:none;"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</body>
+</html> 
